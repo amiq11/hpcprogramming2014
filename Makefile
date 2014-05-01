@@ -20,7 +20,7 @@ SRCDIR	  := src
 OBJDIR	  := obj
 # LIBS      += 
 MDIR	  := measure
-MSRCS	  := main.cpp tester.cpp
+MSRCS	  := main.cpp tester.cpp dataset.cpp
 MOBJS	  := $(MSRCS:.cpp=.o)
 MOBJS_FULL = $(addprefix $(OBJDIR)/$(MDIR)/, $(MOBJS))
 MDEPS     := $(MSRCS:.cpp=.d)
