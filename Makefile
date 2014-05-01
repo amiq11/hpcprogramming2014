@@ -47,8 +47,12 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.cpp
 
 
 .PHONY: dirs
-dirs:
-	mkdir -pv $(OBJDIR) $(OBJDIR)/$(MDIR)
+dirs: $(OBJDIR) $(OBJDIR)/$(MDIR)
+
+$(OBJDIR):
+	mkdir -pv $@
+$(OBJDIR)/$(MDIR):
+	mkdir -pv $@
 
 .PHONY: clean
 clean:
