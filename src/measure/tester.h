@@ -9,5 +9,5 @@ public:
     ~Tester();
     void run();
 private:
-    uint64_t getDTime();
+    uint64_t getus();
 };

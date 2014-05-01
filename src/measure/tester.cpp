@@ -28,14 +28,12 @@ void Tester::run()
 {
     cout << "# 走るぜ(Tester::run())" << endl;
     shared_ptr<IMulMat> mm (new MMCLASS());
-    // mm->init(0, 1, 2);
-    // mm->multiply(0, 1, 2, nullptr, nullptr, nullptr);
 
     uint32_t n, m, k;
     int la, lb, lc;
     double *A, *B, *C;
-
     cout << "# <Problem 0> " << endl;
+    
     // Prepare dataset
     Dataset dataset;
     dataset.prepare(Dataset::square, n, m, k);
@@ -46,9 +44,9 @@ void Tester::run()
     
     // Measure
     uint64_t before, after;
-    before = getDTime();
+    before = getus();
     mm->multiply();
-    after = getDTime();
+    after = getus();
 
     // Check the answer
     int wcount = dataset.check(C);
@@ -61,7 +59,7 @@ void Tester::run()
     cout << "# Wrong:   " << wcount << " / " << n*m << endl; 
 }
 
-uint64_t Tester::getDTime()
+uint64_t Tester::getus()
 {
     struct ::timeval tv;
     ::gettimeofday(&tv, NULL);
