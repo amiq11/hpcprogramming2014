@@ -31,13 +31,13 @@ Tester::~Tester()
 
 void Tester::_run(Dataset::DataType type)
 {
-    cout << "# 走るぜ(Tester::run())" << endl;
+    cout << "# Run" << endl;
     MMCLASS mm;
     
     uint32_t n, m, k;
     int la, lb, lc;
     double *A, *B, *C;
-    cout << "# <Problem 0> " << endl;
+    cout << "# Prepare " << endl;
     
     // Prepare dataset
     Dataset dataset;
@@ -47,12 +47,14 @@ void Tester::_run(Dataset::DataType type)
     // Set A, B, C
     dataset.set(la, lb, lc, A, B, C);
     
+    cout << "# Run " << endl;
     // Measure
     uint64_t before, after;
     before = getus();
     mm.multiply();
     after = getus();
 
+    cout << "# Check " << endl;
     // Check the answer
     int wcount = dataset.check(C);
 
@@ -73,7 +75,7 @@ void Tester::run()
 
 void Tester::run(int argc, char *argv[])
 {
-    Dataset::DataType type = Dataset::square;
+    Dataset::DataType type = Dataset::free;
     cmdline::parser p;
     p.add<string>("type", 't', "type of input matrix (free, square, mv, symm, trmm, hemm)", false);
     p.add("help", 'h', "print help");
