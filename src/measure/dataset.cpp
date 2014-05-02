@@ -1,7 +1,12 @@
 //! g++ -std=c++11 dataset.cpp -fsyntax-only
 #include "dataset.h"
 #include <iostream>
-#include <random>
+#include <time.h>
+#include <cstdlib>
+#include <sys/types.h>
+#include <unistd.h>
+#include <math.h>
+
 using namespace std;
 
 const string Dataset::dataDir      = "./data/";
@@ -35,7 +40,7 @@ Dataset::~Dataset()
 
 void Dataset::createFileListMap()
 {
-    ifstream listfs(fileListPath);
+    ifstream listfs(fileListPath.c_str());
     string type_str;
     // Decode first line
     listfs >> type_str;
@@ -61,26 +66,26 @@ void Dataset::createFileListMap()
 
 void Dataset::createTypeMap()
 {
-    typeMap["<free>"]   = DataType::free;
-    typeMap["<square>"] = DataType::square;
-    typeMap["<mv>"]     = DataType::mv;
-    typeMap["<symm>"]   = DataType::symm;
-    typeMap["<trmm>"]   = DataType::trmm;
-    typeMap["<hemm>"]   = DataType::hemm;
+    typeMap["<free>"]   = free;
+    typeMap["<square>"] = square;
+    typeMap["<mv>"]     = mv;
+    typeMap["<symm>"]   = symm;
+    typeMap["<trmm>"]   = trmm;
+    typeMap["<hemm>"]   = hemm;
 }
 
 void Dataset::prepare(DataType type,
                       uint32_t &n, uint32_t &m, uint32_t &k)
 {
     // prepare
-    random_device seed_gen;
-    mt19937 random(seed_gen());
+    // random_device seed_gen;
+    // mt19937 random(seed_gen());
     vector<string> files = fileListMap[type];
     if (files.size() == 0) {
         throw "There is no file in this type";
     }
-    string file = files[random()%files.size()];
-    ifs.open(dataDir + file);
+    string file = files[rand()%files.size()];
+    ifs.open((dataDir + file).c_str());
     cout << "# " << file << " is selected!" << endl;
     
     // read n, m, k

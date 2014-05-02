@@ -32,7 +32,7 @@ Tester::~Tester()
 void Tester::_run(Dataset::DataType type)
 {
     cout << "# 走るぜ(Tester::run())" << endl;
-    shared_ptr<IMulMat> mm (new MMCLASS());
+    MMCLASS mm;
     
     uint32_t n, m, k;
     int la, lb, lc;
@@ -43,14 +43,14 @@ void Tester::_run(Dataset::DataType type)
     Dataset dataset;
     dataset.prepare(type, n, m, k);
     // Allocate the spaces of matrix
-    mm->init(n, m, k, &la, &lb, &lc, &A, &B, &C);
+    mm.init(n, m, k, &la, &lb, &lc, &A, &B, &C);
     // Set A, B, C
     dataset.set(la, lb, lc, A, B, C);
     
     // Measure
     uint64_t before, after;
     before = getus();
-    mm->multiply();
+    mm.multiply();
     after = getus();
 
     // Check the answer
@@ -61,7 +61,8 @@ void Tester::_run(Dataset::DataType type)
     double gflops = (double)flop/(after-before)*1E-3;
     cout << "# Elapsed: " << (double)(after-before)/1E3 << " [ms]" << endl;
     cout << "# Flops:   " << gflops << " [GFLOPS]" << endl;
-    cout << "# Wrong:   " << wcount << " / " << n*m << endl; 
+    cout << "# Wrong:   " << wcount << " / " << n*m << endl;
+
 }
 
 void Tester::run()

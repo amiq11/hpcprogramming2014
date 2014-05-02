@@ -8,11 +8,31 @@ YOURSRCS  := mymulmat.cpp
 YOURCLASS := MyMulMat
 YOURCLASSHEADER := mymulmat.h
 
+# FX10/XEONPHI/MYLOCAL
+PLATFORM := MYLOCAL
+
 # 適宜変更しても大丈夫
-CXX       = g++
-LD        = g++
-CXXFLAGS += -std=c++11
+ifeq ($(PLATFORM),FX10)
+CXX       = mpiFCCpx
+LD        = mpiFCCpx
+CXXFLAGS += -Xg -MMD -Wall
+LDFLAGS  += 
+LIBS     += 
+endif
+ifeq ($(PLATFORM),XEONPHI)
+CXX       = icc
+LD        = icc
+CXXFLAGS += -MMD -W -Wall -mmic
+LDFLAGS  += -mmic
+LIBS     += -lmpi
+endif
+ifeq ($(PLATFORM),MYLOCAL)
+CXX       = mpic++
+LD        = mpic++
+CXXFLAGS += -std=gnu++03 -MMD -W -Wall
 LDFLAGS  +=
+LIBS     +=
+endif
 
 # 測定用
 VERSION   := 0.1.0
@@ -31,8 +51,6 @@ YOUROBJS      := $(YOURSRCS:.cpp=.o)
 YOUROBJS_FULL  = $(addprefix $(OBJDIR)/, $(YOUROBJS))
 YOURDEPS      := $(YOURSRCS:.cpp=.d)
 YOURDEPS_FULL  = $(addprefix $(OBJDIR)/, $(YOURDEPS))
-# Append flags
-CXXFLAGS  += -MMD -W -Wall
 
 .PHONY: all
 all: build
@@ -41,7 +59,7 @@ all: build
 build: dirs $(MAIN)
 
 $(MAIN): $(MOBJS_FULL) $(YOUROBJS_FULL)
-	$(LD) $(LDFLAGS) -o $@ $^
+	$(LD) $(LDFLAGS) -o $@ $^ $(LIBS)
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.cpp
 	$(CXX) $(CXXFLAGS) -DVERSION=\"$(VERSION)\" -DMMCLASS=$(YOURCLASS) -include $(SRCDIR)/$(YOURCLASSHEADER) -c -o $@ $< $(LIBS)
