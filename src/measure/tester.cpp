@@ -16,7 +16,7 @@ using namespace std;
 #endif
 
 #ifndef VERSION
-#  define VERSION undefined
+#  define VERSION "undefined"
 #endif
 
 Tester::Tester()

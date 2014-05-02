@@ -44,7 +44,7 @@ $(MAIN): $(MOBJS_FULL) $(YOUROBJS_FULL)
 	$(LD) $(LDFLAGS) -o $@ $^
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.cpp
-	$(CXX) $(CXXFLAGS) -DVERSION=$(VERSION) -DMMCLASS=$(YOURCLASS) -include $(SRCDIR)/$(YOURCLASSHEADER) -c -o $@ $< $(LIBS)
+	$(CXX) $(CXXFLAGS) -DVERSION=\"$(VERSION)\" -DMMCLASS=$(YOURCLASS) -include $(SRCDIR)/$(YOURCLASSHEADER) -c -o $@ $< $(LIBS)
 
 
 .PHONY: dirs
