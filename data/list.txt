@@ -1,6 +1,7 @@
 <free>
-<square>
 small.dat
+small.dat
+<square>
 <symm>
 small.dat
 <trmm>

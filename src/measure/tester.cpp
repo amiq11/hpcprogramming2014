@@ -77,7 +77,7 @@ void Tester::run(int argc, char *argv[])
 {
     Dataset::DataType type = Dataset::free;
     cmdline::parser p;
-    p.add<string>("type", 't', "type of input matrix (free, square, mv, symm, trmm, hemm)", false);
+    p.add<string>("type", 't', "type of input matrix (free, square, mv, symm, trmm, hemm)", false, "free");
     p.add("help", 'h', "print help");
     p.add("version", 'v', "print version");
 

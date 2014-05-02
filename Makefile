@@ -9,7 +9,7 @@ YOURCLASS := MyMulMat
 YOURCLASSHEADER := mymulmat.h
 
 # FX10/XEONPHI/MYLOCAL
-PLATFORM := FX10
+PLATFORM := MYLOCAL
 
 # 適宜変更しても大丈夫
 ifeq ($(PLATFORM),FX10)
@@ -28,7 +28,7 @@ LIBS     +=
 endif
 ifeq ($(PLATFORM),MYLOCAL)
 CXX       = mpic++
-LD        = mpic++
+LD	  = mpic++
 CXXFLAGS += -std=gnu++03 -MMD -W -Wall
 LDFLAGS  +=
 LIBS     +=
