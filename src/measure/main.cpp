@@ -10,7 +10,9 @@ int main( int argc, char *argv[] )
         Tester test;
         test.run(argc, argv);
     } catch (const char *ex) {
-        std::cerr << "# ERROR! ( " << ex << " )" << std::endl;
+        std::cerr << "# ERROR! :: " << ex << std::endl;
+    } catch (std::string ex) {
+        std::cerr << "# ERROR! :: " << ex << std::endl;
     }
     return 0;
 }

@@ -41,6 +41,10 @@ Dataset::~Dataset()
 void Dataset::createFileListMap()
 {
     ifstream listfs(fileListPath.c_str());
+    if (listfs.fail()) {
+        throw string("\"") + fileListPath + "\" is not found!";
+    }
+    
     string type_str;
     // Decode first line
     listfs >> type_str;
@@ -87,6 +91,9 @@ void Dataset::prepare(DataType type,
     string file = files[rand()%files.size()];
     ifs.open((dataDir + file).c_str());
     cout << "# " << file << " is selected!" << endl;
+    if (ifs.fail()) {
+        throw "FAILED to open!";
+    }
     
     // read n, m, k
     ifs.read((char*)(&n), sizeof(uint32_t));
@@ -97,14 +104,14 @@ void Dataset::prepare(DataType type,
 }
 
 void Dataset::set(int la, int lb, int lc,
-                  double *A, double *B, double *C )
+                  melem_t *A, melem_t *B, melem_t *C )
 {
     // Fill in A, B, C
     for ( uint32_t i = 0; i < n; i++ ) {
-        ifs.read((char*)(A+i*la), sizeof(double)*k);
+        ifs.read((char*)(A+i*la), sizeof(melem_t)*k);
     }
     for ( uint32_t i = 0; i < k; i++ ) {
-        ifs.read((char*)(B+i*lb), sizeof(double)*m);
+        ifs.read((char*)(B+i*lb), sizeof(melem_t)*m);
     }
     for (uint32_t i = 0; i < n; i++) {
         for (uint32_t j = 0; j < m; j++) {
@@ -114,11 +121,11 @@ void Dataset::set(int la, int lb, int lc,
     this->la = la; this->lb = lb; this->lc = lc;
 }
 
-int Dataset::check(double *C)
+int Dataset::check(melem_t *C)
 {
     // Check Answer
-    double *ans = new double[n*m]();
-    ifs.read((char*)ans, sizeof(double)*n*m);
+    melem_t *ans = new melem_t[n*m]();
+    ifs.read((char*)ans, sizeof(melem_t)*n*m);
     int wcount = 0;             // # of wrong answer
     for ( uint32_t i = 0; i < n; i++ ) {
         for ( uint32_t j = 0; j < m; j++ ) {

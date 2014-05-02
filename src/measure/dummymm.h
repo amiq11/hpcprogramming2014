@@ -6,7 +6,7 @@ class DummyMM : public IMulMat
 public:
     void init(int n, int m, int k,
               int *la, int *lb, int *lc,
-              double **A, double **B, double **C) { return };
+              float **A, float **B, float **C) { return };
     void multiply() { return };
 };
 

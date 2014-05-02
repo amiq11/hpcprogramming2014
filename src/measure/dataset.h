@@ -6,6 +6,8 @@
 #include <string>
 #include <stdint.h>
 
+typedef float melem_t;
+
 class Dataset
 {
 public:
@@ -23,8 +25,8 @@ public:
     void prepare(DataType type,
              uint32_t &n, uint32_t &m, uint32_t &k);
     void set(int la, int lb, int lc,
-             double *A, double *B, double *C);
-    int  check(double *C);
+             melem_t *A, melem_t *B, melem_t *C);
+    int  check(melem_t *C);
 
 private:
     std::ifstream ifs;

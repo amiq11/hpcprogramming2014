@@ -7,10 +7,10 @@ public:
     ~MyMulMat();
     void init(int n, int m, int k,
               int *la, int *lb, int *lc,
-              double **A, double **B, double **C);
+              float **A, float **B, float **C);
     void multiply();
 private:
     int n, m, k;
-    double *A, *B, *C;
+    float *A, *B, *C;
 };
 

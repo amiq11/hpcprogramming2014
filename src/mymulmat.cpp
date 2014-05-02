@@ -12,13 +12,13 @@ MyMulMat::~MyMulMat()
 }
 void MyMulMat::init(int n, int m, int k,
           int *la, int *lb, int *lc,
-          double **A, double **B, double **C)
+          float **A, float **B, float **C)
 {
     std::cout << "mymul init" << std::endl;
     *la = k; *lb = m; *lc = m;
-    *A = new double[n*k]();
-    *B = new double[k*m]();
-    *C = new double[n*m]();
+    *A = new float[n*k]();
+    *B = new float[k*m]();
+    *C = new float[n*m]();
     this->n = n; this->m = m; this->k = k;
     this->A = *A; this->B = *B; this->C = *C;
     return;

@@ -28,7 +28,7 @@ LIBS     +=
 endif
 ifeq ($(PLATFORM),MYLOCAL)
 CXX       = mpic++
-LD	  = mpic++
+LD        = mpic++
 CXXFLAGS += -std=gnu++03 -MMD -W -Wall
 LDFLAGS  +=
 LIBS     +=

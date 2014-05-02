@@ -36,7 +36,7 @@ void Tester::_run(Dataset::DataType type)
     
     uint32_t n, m, k;
     int la, lb, lc;
-    double *A, *B, *C;
+    melem_t *A, *B, *C;
     cout << "# Prepare " << endl;
     
     // Prepare dataset
