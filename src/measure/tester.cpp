@@ -74,7 +74,7 @@ void Tester::run(int argc, char *argv[])
 {
     Dataset::DataType type = Dataset::square;
     cmdline::parser p;
-    p.add<string>("type", 't', "type of input matrix (square, mv, symm, trmm, hemm)", false);
+    p.add<string>("type", 't', "type of input matrix (free, square, mv, symm, trmm, hemm)", false);
     p.add("help", 'h', "print help");
     p.add("version", 'v', "print version");
 
@@ -92,7 +92,8 @@ void Tester::run(int argc, char *argv[])
 
     if (p.exist("type")) {
         string typeName = p.get<string>("type");
-        if (typeName == "square")      type = Dataset::square;
+        if (typeName == "free")        type = Dataset::free;
+        else if (typeName == "square") type = Dataset::square;
         else if (typeName == "mv")     type = Dataset::mv;
         else if (typeName == "symm")   type = Dataset::symm;
         else if (typeName == "trmm")   type = Dataset::trmm;

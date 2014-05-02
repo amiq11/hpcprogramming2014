@@ -61,6 +61,7 @@ void Dataset::createFileListMap()
 
 void Dataset::createTypeMap()
 {
+    typeMap["<free>"]   = DataType::free;
     typeMap["<square>"] = DataType::square;
     typeMap["<mv>"]     = DataType::mv;
     typeMap["<symm>"]   = DataType::symm;
@@ -75,10 +76,13 @@ void Dataset::prepare(DataType type,
     random_device seed_gen;
     mt19937 random(seed_gen());
     vector<string> files = fileListMap[type];
+    if (files.size() == 0) {
+        throw "There is no file in this type";
+    }
     string file = files[random()%files.size()];
     ifs.open(dataDir + file);
     cout << "# " << file << " is selected!" << endl;
-
+    
     // read n, m, k
     ifs.read((char*)(&n), sizeof(uint32_t));
     ifs.read((char*)(&m), sizeof(uint32_t));

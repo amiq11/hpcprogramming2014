@@ -1,3 +1,4 @@
+<free>
 <square>
 small.dat
 <symm>

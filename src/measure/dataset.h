@@ -10,6 +10,7 @@ class Dataset
 {
 public:
     enum DataType {
+        free,
         square,
         mv,
         symm,
