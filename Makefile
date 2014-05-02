@@ -9,13 +9,13 @@ YOURCLASS := MyMulMat
 YOURCLASSHEADER := mymulmat.h
 
 # FX10/XEONPHI/MYLOCAL
-PLATFORM := MYLOCAL
+PLATFORM := FX10
 
 # 適宜変更しても大丈夫
 ifeq ($(PLATFORM),FX10)
-CXX       = mpiFCCpx
-LD        = mpiFCCpx
-CXXFLAGS += -Xg -MMD -Wall
+CXX       = FCCpx
+LD        = FCCpx
+CXXFLAGS += -Xg 
 LDFLAGS  += 
 LIBS     += 
 endif
@@ -24,7 +24,7 @@ CXX       = icc
 LD        = icc
 CXXFLAGS += -MMD -W -Wall -mmic
 LDFLAGS  += -mmic
-LIBS     += -lmpi
+LIBS     +=
 endif
 ifeq ($(PLATFORM),MYLOCAL)
 CXX       = mpic++
