@@ -15,6 +15,7 @@ CXXFLAGS += -std=c++11
 LDFLAGS  +=
 
 # 測定用
+VERSION   := 0.1.0
 MAIN      := main.bin
 SRCDIR	  := src
 OBJDIR	  := obj
@@ -43,7 +44,7 @@ $(MAIN): $(MOBJS_FULL) $(YOUROBJS_FULL)
 	$(LD) $(LDFLAGS) -o $@ $^
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.cpp
-	$(CXX) $(CXXFLAGS) -DMMCLASS=$(YOURCLASS) -include $(SRCDIR)/$(YOURCLASSHEADER) -c -o $@ $< $(LIBS)
+	$(CXX) $(CXXFLAGS) -DVERSION=$(VERSION) -DMMCLASS=$(YOURCLASS) -include $(SRCDIR)/$(YOURCLASSHEADER) -c -o $@ $< $(LIBS)
 
 
 .PHONY: dirs

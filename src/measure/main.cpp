@@ -1,9 +1,9 @@
 #include "tester.h" 
 
-int main( void )
+int main( int argc, char *argv[] )
 {
     Tester test;
-    test.run();
+    test.run(argc, argv);
 
     return 0;
 }
