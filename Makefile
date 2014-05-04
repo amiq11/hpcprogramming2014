@@ -10,6 +10,8 @@ YOURCLASSHEADER := mymulmat.h
 
 # FX10/XEONPHI/MYLOCAL
 PLATFORM := MYLOCAL
+# MPIを利用するときには1,そうでないときは0にする
+USEMPI   := 0
 
 # 適宜変更しても大丈夫
 ifeq ($(PLATFORM),FX10)
@@ -27,8 +29,8 @@ LDFLAGS  += -mmic
 LIBS     +=
 endif
 ifeq ($(PLATFORM),MYLOCAL)
-CXX       = mpic++
-LD        = mpic++
+CXX       = g++
+LD        = g++
 CXXFLAGS += -std=gnu++03 -MMD -W -Wall
 LDFLAGS  +=
 LIBS     +=
@@ -62,7 +64,7 @@ $(MAIN): $(MOBJS_FULL) $(YOUROBJS_FULL)
 	$(LD) $(LDFLAGS) -o $@ $^ $(LIBS)
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.cpp
-	$(CXX) $(CXXFLAGS) -DVERSION=\"$(VERSION)\" -DMMCLASS=$(YOURCLASS) -include $(SRCDIR)/$(YOURCLASSHEADER) -c -o $@ $< $(LIBS)
+	$(CXX) $(CXXFLAGS) -DVERSION=\"$(VERSION)\" -DMMCLASS=$(YOURCLASS) -DUSEMPI=$(USEMPI) -include $(SRCDIR)/$(YOURCLASSHEADER) -c -o $@ $< $(LIBS)
 
 
 .PHONY: dirs

@@ -1,4 +1,5 @@
 #include <iostream>
+#include <sstream>
 #include <fstream>
 #include <memory>
 #include <sys/time.h>
@@ -7,6 +8,10 @@
 #include "dataset.h"
 #include "imulmat.h"
 #include "cmdline.h"
+
+#if USEMPI
+#  include "mpi.h"
+#endif
 
 using namespace std;
 
@@ -19,52 +24,79 @@ using namespace std;
 #  define VERSION "undefined"
 #endif
 
-Tester::Tester()
+#define RANK0 if (myrank==0)
+
+Tester::Tester() : myrank(0)
 {
     // cout << "Tester constructed" << endl;
+#if USEMPI
+    MPI::Init();
+    myrank = MPI::COMM_WORLD.Get_rank();
+    cout << "MYRANK = " << myrank << endl;
+#endif
 }
 
 Tester::~Tester()
 {
     // cout << "Tester destructed" << endl;
+#if USEMPI
+    MPI::Finalize();
+#endif
+}
+
+void Tester::print(string str)
+{
+    if (myrank == 0) {
+        cout << str << endl;
+    }
 }
 
 void Tester::_run(Dataset::DataType type)
 {
-    cout << "# Run" << endl;
+    print("# Run");
     MMCLASS mm;
     
     uint32_t n, m, k;
     int la, lb, lc;
     melem_t *A, *B, *C;
-    cout << "# Prepare " << endl;
+    print("# Prepare ");
     
     // Prepare dataset
     Dataset dataset;
-    dataset.prepare(type, n, m, k);
+    RANK0 {
+        dataset.prepare(type, n, m, k);
+    }
+    MPI::COMM_WORLD.Bcast(&n, 1, MPI::UNSIGNED, 0);
+    MPI::COMM_WORLD.Bcast(&m, 1, MPI::UNSIGNED, 0);
+    MPI::COMM_WORLD.Bcast(&k, 1, MPI::UNSIGNED, 0);
     // Allocate the spaces of matrix
     mm.init(n, m, k, &la, &lb, &lc, &A, &B, &C);
     // Set A, B, C
-    dataset.set(la, lb, lc, A, B, C);
-    
-    cout << "# Run " << endl;
+    RANK0 {
+        dataset.set(la, lb, lc, A, B, C);
+    }
+    print("# Run ");
     // Measure
     uint64_t before, after;
     before = getus();
     mm.multiply();
     after = getus();
 
-    cout << "# Check " << endl;
+    print("# Check ");
     // Check the answer
-    int wcount = dataset.check(C);
-
-    // Print result
-    uint64_t flop = 2ULL * n * m * k;
-    double gflops = (double)flop/(after-before)*1E-3;
-    cout << "# Elapsed: " << (double)(after-before)/1E3 << " [ms]" << endl;
-    cout << "# Flops:   " << gflops << " [GFLOPS]" << endl;
-    cout << "# Wrong:   " << wcount << " / " << n*m << endl;
-
+    int wcount = 0;
+    if (myrank == 0) {
+        wcount = dataset.check(C);
+    
+        // Print result
+        uint64_t flop = 2ULL * n * m * k;
+        double gflops = (double)flop/(after-before)*1E-3;
+        ostringstream os;
+        os << "# Elapsed: " << (double)(after-before)/1E3 << " [ms]" << endl;
+        os << "# Flops:   " << gflops << " [GFLOPS]" << endl;
+        os << "# Wrong:   " << wcount << " / " << n*m << endl;
+        print(os.str());
+    }
 }
 
 void Tester::run()
@@ -83,13 +115,16 @@ void Tester::run(int argc, char *argv[])
 
     // help
     if (!p.parse(argc, argv)||p.exist("help")) {
-        cout << p.error_full() << p.usage();
+        print(p.error_full());
+        print(p.usage());
         return;
     }
 
     if (p.exist("version")) {
-        cout << "MulMat Tester -- version: " << VERSION << endl;
-        cout << "by Makoto Shimazu" << endl;
+        ostringstream os;
+        os << "MulMat Tester -- version: " << VERSION << endl;
+        os << "by Makoto Shimazu" << endl;
+        print(os.str());
         return;
     }
 
@@ -102,8 +137,10 @@ void Tester::run(int argc, char *argv[])
         else if (typeName == "trmm")   type = Dataset::trmm;
         else if (typeName == "hemm")   type = Dataset::hemm;
         else {
-            cout << "Unknown type!" << endl;
-            cout << p.usage();
+            ostringstream os;
+            os << "Unknown type!" << endl;
+            os << p.usage();
+            print(os.str());
             return;
         }
     }

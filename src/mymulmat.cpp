@@ -1,6 +1,5 @@
 #include "mymulmat.h"
 #include <iostream>
-
 MyMulMat::MyMulMat()
 {
     std::cout << "mymul constructed" << std::endl;
