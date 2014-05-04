@@ -43,6 +43,25 @@ make clean
 ```
 を実行してください。
 
+MPIを利用する際の注意
+----
+MPIを利用する際には、Makefileに以下の変更を加える必要があります。
+1. USEMPIオプションを1にする
+2. 利用するプラットフォームのCXXを変更する
+   * MYLOCALであれば、g++からmpic++に変更する
+   * FX10であれば、FCCpxからmpiFCCpxに変更する
+   * XEONPHIであれば、iccからmpiiccに変更する
+
+プログラムの全体の実行の流れとしては以下のようになるので注意してください。
+1. [ALL]   MPI::Init()
+2. [ALL]   mymulmatのコンストラクタ
+3. [ALL]   mymulmat.init n,m,kは全てのプロセスに同じものが渡されます。
+4. [RANK0] A, Bに値がセットされる
+5. [ALL]   mymulmat.multiply A, Bのブロードキャストは各自で実行してください。
+6. [RANK0] Cをテスト
+7. [ALL]   mymulmatのデストラクタ
+8. [ALL]   MPI::Finalize()
+
 オプション
 ----
 `./main.bin` : リスト中の<free>の中からランダムにファイルを取ってきて実行
