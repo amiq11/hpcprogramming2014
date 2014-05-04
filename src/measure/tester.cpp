@@ -66,9 +66,11 @@ void Tester::_run(Dataset::DataType type)
     RANK0 {
         dataset.prepare(type, n, m, k);
     }
+#if USEMPI    
     MPI::COMM_WORLD.Bcast(&n, 1, MPI::UNSIGNED, 0);
     MPI::COMM_WORLD.Bcast(&m, 1, MPI::UNSIGNED, 0);
     MPI::COMM_WORLD.Bcast(&k, 1, MPI::UNSIGNED, 0);
+#endif
     // Allocate the spaces of matrix
     mm.init(n, m, k, &la, &lb, &lc, &A, &B, &C);
     // Set A, B, C
