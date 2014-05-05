@@ -127,9 +127,11 @@ int Dataset::check(melem_t *C)
     melem_t *ans = new melem_t[n*m]();
     ifs.read((char*)ans, sizeof(melem_t)*n*m);
     int wcount = 0;             // # of wrong answer
+    float delta = pow(2,(log2f(k)+7*2)-23); // MAX*2^(-2) (float pricision is 2^23, max of each value is +/-2^7)
+    cout << "# (Delta = " << delta << ")" << endl;
     for ( uint32_t i = 0; i < n; i++ ) {
         for ( uint32_t j = 0; j < m; j++ ) {
-            if ( fabs(C[i*lc+j] - ans[i*m+j]) > 1E-9 ) {
+            if ( fabs(C[i*lc+j] - ans[i*m+j]) > delta ) {
                 cerr << "### WRONG: "
                      << "C(" << i << ", " << j << ") != "
                      << "Ans(" << i << ", " << j << ") :: "
