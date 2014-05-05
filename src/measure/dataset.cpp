@@ -92,7 +92,7 @@ void Dataset::prepare(DataType type,
     ifs.open((dataDir + file).c_str());
     cout << "# " << file << " is selected!" << endl;
     if (ifs.fail()) {
-        throw "FAILED to open!";
+        throw "FAILED TO OPEN!";
     }
     
     // read n, m, k

@@ -30,9 +30,6 @@ Tester::Tester() : myrank(0)
 {
     // cout << "Tester constructed" << endl;
 #if USEMPI
-    if (!MPI::Is_initialized()) {
-        MPI::Init();
-    }
     myrank = MPI::COMM_WORLD.Get_rank();
 #endif
 }
@@ -40,11 +37,6 @@ Tester::Tester() : myrank(0)
 Tester::~Tester()
 {
     // cout << "Tester destructed" << endl;
-#if USEMPI
-    if (!MPI::Is_finalized()) {
-        MPI::Finalize();
-    }
-#endif
 }
 
 void Tester::print(string str)
