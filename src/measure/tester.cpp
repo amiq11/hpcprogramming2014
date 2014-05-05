@@ -34,7 +34,6 @@ Tester::Tester() : myrank(0)
         MPI::Init();
     }
     myrank = MPI::COMM_WORLD.Get_rank();
-    cout << "MYRANK = " << myrank << endl;
 #endif
 }
 
