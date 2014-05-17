@@ -33,6 +33,8 @@ private:
     uint32_t n, m, k;
     int la, lb, lc;
 
+    uint32_t tn, tm, tk, x, y, z;  // for Large DataSet
+ 
     static void createTypeMap();
     static void createFileListMap();
     static std::map< DataType, std::vector< std::string > > fileListMap;
