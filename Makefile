@@ -37,7 +37,7 @@ LIBS     +=
 endif
 
 # 測定用
-VERSION   := 0.2.2
+VERSION   := 0.3.0
 MAIN      := main.bin
 SRCDIR	  := src
 OBJDIR	  := obj
