@@ -203,7 +203,8 @@ Result Dataset::check(melem_t *C)
 {
     int wcount = 0;             // # of wrong answer
     int ewcount = 0;            // # of truly wrong answer
-    float delta   = pow(2,(log2f(k)+7*2)-22); // MAX*2^(-1) (float pricision is 2^23, max of each value is +/-2^7)
+    float maxwrong = 0;
+    float delta   = pow(2,(log2f(k)+7*2)-23); // MAX*2^(-2) (float pricision is 2^23, max of each value is +/-2^7)
     float epsilon = pow(2,(log2f(k)+7*2)-20); // MAX*2^(1)
     cout << "# (Delta(Strict) = " << delta   << ")" << endl;
     cout << "# (Delta(Loose)  = " << epsilon << ")" << endl;
@@ -222,7 +223,8 @@ Result Dataset::check(melem_t *C)
             for ( jj = 0; jj+tm < m; jj+=tm ) 
                 for ( i = 0; i < tn; i++ )
                     for ( j = 0; j < tm; j++ ) {
-                        if ( fabs(C[(i+ii)*lc + (jj+j)] - c[i*tm+j]) > delta ) {
+                        float diff = fabs(C[(i+ii)*lc + (jj+j)] - c[i*tm+j]);
+                        if ( diff > delta ) {
 #if PRINTWRONG
                             cerr << "### WRONG: "
                                  << "C(" << i+ii << ", " << j+jj << ") != "
@@ -232,13 +234,17 @@ Result Dataset::check(melem_t *C)
 #endif
                             wcount++;
                         }
-                        if ( fabs(C[(i+ii)*lc + (jj+j)] - c[i*tm+j]) > epsilon ) {
+                        if ( diff > epsilon ) {
                             ewcount++;
+                        }
+                        if ( diff > maxwrong ) {
+                            maxwrong = diff;
                         }
                     }
             for ( i = 0; i < tn; i++ )
                 for ( j = 0; j < z; j++ ) {
-                    if ( fabs(C[(i+ii)*lc + (jj+j)] - rc[i*z+j]) > delta ) {
+                    float diff = fabs(C[(i+ii)*lc + (jj+j)] - rc[i*z+j]);
+                    if ( diff > delta ) {
 #if PRINTWRONG
                         cerr << "### WRONG: "
                              << "C(" << i+ii << ", " << j+jj << ") != "
@@ -248,15 +254,19 @@ Result Dataset::check(melem_t *C)
 #endif
                         wcount++;
                     }
-                    if ( fabs(C[(i+ii)*lc + (jj+j)] - rc[i*z+j]) > epsilon ) {
+                    if ( diff > epsilon ) {
                         ewcount++;
+                    }
+                    if ( diff > maxwrong ) {
+                        maxwrong = diff;
                     }
                 }
         }
         for ( jj = 0; jj+tm < m; jj+=tm ) 
             for ( i = 0; i < x; i++ )
                 for ( j = 0; j < tm; j++ ) {
-                    if ( fabs(C[(i+ii)*lc + (jj+j)] - bc[i*tm+j]) > delta ) {
+                    float diff = fabs(C[(i+ii)*lc + (jj+j)] - bc[i*tm+j]);
+                    if ( diff > delta ) {
 #if PRINTWRONG
                         cerr << "### WRONG: "
                              << "C(" << i+ii << ", " << j+jj << ") != "
@@ -266,13 +276,17 @@ Result Dataset::check(melem_t *C)
 #endif
                         wcount++;
                     }
-                    if ( fabs(C[(i+ii)*lc + (jj+j)] - bc[i*tm+j]) > epsilon ) {
+                    if ( diff > epsilon ) {
                         ewcount++;
-                    }                    
+                    }
+                    if ( diff > maxwrong ) {
+                        maxwrong = diff;
+                    }
                 }
         for ( i = 0; i < x; i++ ) 
             for ( j = 0; j < z; j++ ) {
-                if ( fabs(C[(i+ii)*lc + (jj+j)] - rbc[i*z+j]) > delta ) {
+                float diff = fabs(C[(i+ii)*lc + (jj+j)] - rbc[i*z+j]);
+                if ( diff > delta ) {
 #if PRINTWRONG
                     cerr << "### WRONG: "
                          << "C(" << i+ii << ", " << j+jj << ") != "
@@ -282,8 +296,11 @@ Result Dataset::check(melem_t *C)
 #endif
                     wcount++;
                 }
-                if ( fabs(C[(i+ii)*lc + (jj+j)] - rbc[i*z+j]) > epsilon ) {
+                if ( diff > epsilon ) {
                     ewcount++;
+                }
+                if ( diff > maxwrong ) {
+                    maxwrong = diff;
                 }
             }
         delete c; delete bc; delete rc; delete rbc;
@@ -293,7 +310,8 @@ Result Dataset::check(melem_t *C)
         ifs.read((char*)ans, sizeof(melem_t)*n*m);
         for ( uint32_t i = 0; i < n; i++ ) {
             for ( uint32_t j = 0; j < m; j++ ) {
-                if ( fabs(C[i*lc+j] - ans[i*m+j]) > delta ) {
+                float diff = fabs(C[i*lc+j] - ans[i*m+j]);
+                if ( diff > delta ) {
 #if PRINTWRONG
                     cerr << "### WRONG: "
                          << "C(" << i << ", " << j << ") != "
@@ -303,12 +321,14 @@ Result Dataset::check(melem_t *C)
 #endif
                     wcount++;
                 }
-                if ( fabs(C[i*lc+j] - ans[i*m+j]) > epsilon ) {
+                if ( diff > epsilon ) {
                     ewcount++;
+                }
+                if ( diff > maxwrong ) {
+                    maxwrong = diff;
                 }
             }
         }
-
     }
-    return Result(wcount, ewcount);
+    return Result(wcount, ewcount, maxwrong);
 }

@@ -11,10 +11,15 @@ typedef float melem_t;
 class Result {
 private:
     int wcount, ewcount;
+    float maxwrong;
 public:
-    Result(int w, int ew) { wcount = w; ewcount = ew; }
+    Result(int w, int ew, float mw) {
+        wcount = w; ewcount = ew;
+        maxwrong = mw;
+    }
     int getWCount() { return wcount; }
     int getEWCount() { return ewcount; }
+    float getMaxWrong() { return maxwrong; }
 };
 
 class Dataset

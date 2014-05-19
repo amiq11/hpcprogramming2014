@@ -81,11 +81,8 @@ void Tester::_run(Dataset::DataType type)
 
     print("# Check ");
     // Check the answer
-    int wcount = 0, ewcount = 0;
     if (myrank == 0) {
         Result r = dataset.check(C);
-        wcount = r.getWCount();
-        ewcount = r.getEWCount();
     
         // Print result
         uint64_t flop = 2ULL * n * m * k;
@@ -93,8 +90,9 @@ void Tester::_run(Dataset::DataType type)
         ostringstream os;
         os << "# Elapsed:        " << (double)(after-before)/1E3 << " [ms]" << endl;
         os << "# Flops:          " << gflops << " [GFLOPS]" << endl;
-        os << "# Wrong (Strict): " << wcount << " / " << n*m << endl;
-        os << "# Wrong (Loose):  " << ewcount << " / " << n*m << endl;
+        os << "# Wrong (Strict): " << r.getWCount() << " / " << n*m << endl;
+        os << "# Wrong (Loose):  " << r.getEWCount() << " / " << n*m << endl;
+        os << "# Max Wrongness:  " << r.getMaxWrong() << endl;
         print(os.str());
     }
 }
