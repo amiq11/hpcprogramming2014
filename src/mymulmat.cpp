@@ -29,7 +29,7 @@ void MyMulMat::multiply()
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < m; j++) {
             for (int l = 0; l < k; l++ ) {
-                C[i*m+j] += A[i*k+l] * B[l*m+j];
+//                C[i*m+j] += A[i*k+l] * B[l*m+j];
             }
         }
     }

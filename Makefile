@@ -12,6 +12,8 @@ YOURCLASSHEADER := mymulmat.h
 PLATFORM := MYLOCAL
 # MPIを利用するときには1,そうでないときは0にする
 USEMPI   := 0
+# Wrong!のプリントをするときには1, しないときには0
+PRINTWRONG := 1
 
 # 適宜変更しても大丈夫
 ifeq ($(PLATFORM),FX10)
@@ -64,7 +66,7 @@ $(MAIN): $(MOBJS_FULL) $(YOUROBJS_FULL)
 	$(LD) $(LDFLAGS) -o $@ $^ $(LIBS)
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.cpp
-	$(CXX) $(CXXFLAGS) -DVERSION=\"$(VERSION)\" -DMMCLASS=$(YOURCLASS) -DUSEMPI=$(USEMPI) -include $(SRCDIR)/$(YOURCLASSHEADER) -c -o $@ $< $(LIBS)
+	$(CXX) $(CXXFLAGS) -DVERSION=\"$(VERSION)\" -DMMCLASS=$(YOURCLASS) -DUSEMPI=$(USEMPI) -DPRINTWRONG=$(PRINTWRONG) -include $(SRCDIR)/$(YOURCLASSHEADER) -c -o $@ $< $(LIBS)
 
 
 .PHONY: dirs

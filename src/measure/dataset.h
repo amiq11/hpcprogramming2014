@@ -8,6 +8,15 @@
 
 typedef float melem_t;
 
+class Result {
+private:
+    int wcount, ewcount;
+public:
+    Result(int w, int ew) { wcount = w; ewcount = ew; }
+    int getWCount() { return wcount; }
+    int getEWCount() { return ewcount; }
+};
+
 class Dataset
 {
 public:
@@ -26,7 +35,7 @@ public:
              uint32_t &n, uint32_t &m, uint32_t &k);
     void set(int la, int lb, int lc,
              melem_t *A, melem_t *B, melem_t *C);
-    int  check(melem_t *C);
+    Result  check(melem_t *C);
 
 private:
     std::ifstream ifs;
