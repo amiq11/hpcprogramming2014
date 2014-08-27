@@ -64,10 +64,10 @@ MPIを利用する際には、Makefileに以下の変更を加える必要があ
 
 オプション
 ----
-`./main.bin` : リスト中の<free>の中からランダムにファイルを取ってきて実行
-`./main.bin -h` : ヘルプ
-`./main.bin -v` : バージョン
-`./main.bin -t type` : タイプを指定して実行。typeとしてはfree, mv(mat-vec), trmm(Aが上三角), symm(Aが対称), square(正方)がある。
+`./main.bin` : リスト中の<free>の中からランダムにファイルを取ってきて実行  
+`./main.bin -h` : ヘルプ  
+`./main.bin -v` : バージョン  
+`./main.bin -t type` : タイプを指定して実行。typeとしてはfree, mv(mat-vec), trmm(Aが上三角), symm(Aが対称), square(正方)がある。  
 
 自分のリポジトリとの結合
 ----
@@ -90,3 +90,7 @@ MPIを利用する際には、Makefileに以下の変更を加える必要があ
 作者
 ----
 Makoto Shimazu <shimazu@eidos.ic.i.u-tokyo.ac.jp>
+
+ライセンス
+----
+BSD 2-Clause License
